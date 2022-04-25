@@ -3,6 +3,11 @@
   let prevScrollHeight = 0; // 현재스크롤위치(yOffset)보다 이전에 위치한 스크롤 섹션들의 스크롤 높이의 합
   let currentScene = 0; // 현재 활성화 scroll-section
   let enterNewScene = false; // 새로운 씬이 시작되는 순간 true
+  let acc = 0.2;
+  let delayedYOffset = 0;
+  let rafId;
+  let rafState;
+
   const sceneInfo = [
     // scroll-section-0
     {
@@ -209,8 +214,6 @@
     const scrollRatio = currentYOffset / scrollHeight;
     switch (currentScene) {
       case 0: {
-        let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
-        objs.context.drawImage(objs.videoImages[sequence], 0, 0);
         objs.canvas.style.opacity = calcValues(values.canvas_opacity, currentYOffset);
         if (scrollRatio <= 0.22) {
           // in
@@ -277,8 +280,6 @@
       case 1:
         break;
       case 2: {
-        let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
-        objs.context.drawImage(objs.videoImages[sequence], 0, 0);
         if (scrollRatio <= 0.5) {
           // in
           objs.canvas.style.opacity = calcValues(values.canvas_opacity_in, currentYOffset);
@@ -504,12 +505,12 @@
     for (let i = 0; i < currentScene; i++) {
       prevScrollHeight += sceneInfo[i].scrollHeight;
     }
-    if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+    if (delayedYOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
       enterNewScene = true;
       currentScene++;
       document.body.setAttribute("id", `show-scene-${currentScene}`);
     }
-    if (yOffset < prevScrollHeight) {
+    if (delayedYOffset < prevScrollHeight) {
       enterNewScene = true;
       if (currentScene === 0) return; // 브라우저 바운스 효과로 마이너스되는 것을 방지(모바일)
       currentScene--;
@@ -518,11 +519,33 @@
     if (enterNewScene) return;
     playAnimation();
   };
+  const loop = () => {
+    delayedYOffset = delayedYOffset + (yOffset - delayedYOffset) * acc;
+    if (!enterNewScene) {
+      if (currentScene === 0 || currentScene === 2) {
+        const currentYOffset = delayedYOffset - prevScrollHeight;
+        const values = sceneInfo[currentScene].values;
+        const objs = sceneInfo[currentScene].objs;
+        let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
+        if (objs.videoImages[sequence]) {
+          objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+        }
+      }
+    }
+    rafId = requestAnimationFrame(loop);
+    if (Math.abs(yOffset - delayedYOffset) < 1) {
+      cancelAnimationFrame(rafId);
+      rafState = false;
+    }
+  };
   window.addEventListener("scroll", () => {
     yOffset = window.pageYOffset;
     scrollLoop();
     checkMenu();
-    git;
+    if (!rafState) {
+      rafId = requestAnimationFrame(loop);
+      rafState = true;
+    }
   });
   window.addEventListener("load", () => {
     setLayout();
