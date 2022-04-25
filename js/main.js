@@ -116,6 +116,13 @@
       },
     },
   ];
+  const checkMenu = () => {
+    if (yOffset > 44) {
+      document.body.classList.add("local-nav-sticky");
+    } else {
+      document.body.classList.remove("local-nav-sticky");
+    }
+  };
   const setCanvasImages = () => {
     let imgElem;
     for (let i = 0; i < sceneInfo[0].values.videoImageCount; i++) {
@@ -514,6 +521,8 @@
   window.addEventListener("scroll", () => {
     yOffset = window.pageYOffset;
     scrollLoop();
+    checkMenu();
+    git;
   });
   window.addEventListener("load", () => {
     setLayout();
