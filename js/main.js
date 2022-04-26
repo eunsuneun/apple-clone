@@ -537,30 +537,31 @@
       rafState = false;
     }
   };
-  window.addEventListener("scroll", () => {
-    yOffset = window.pageYOffset;
-    scrollLoop();
-    checkMenu();
-    if (!rafState) {
-      rafId = requestAnimationFrame(loop);
-      rafState = true;
-    }
-  });
+
   window.addEventListener("load", () => {
     document.body.classList.remove("before-load");
     setLayout();
-  });
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 900) {
+    window.addEventListener("scroll", () => {
+      yOffset = window.pageYOffset;
+      scrollLoop();
+      checkMenu();
+      if (!rafState) {
+        rafId = requestAnimationFrame(loop);
+        rafState = true;
+      }
+    });
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900) {
+        setLayout();
+      }
+      sceneInfo[3].values.rectStartY = 0;
+    });
+    window.addEventListener("orientationchange", () => {
       setLayout();
-    }
-    sceneInfo[3].values.rectStartY = 0;
-  });
-  window.addEventListener("orientationchange", () => {
-    setLayout();
-  });
-  document.querySelector(".loading").addEventListener("transitionend", (e) => {
-    document.body.removeChild(e.currentTarget);
+    });
+    document.querySelector(".loading").addEventListener("transitionend", (e) => {
+      document.body.removeChild(e.currentTarget);
+    });
   });
   setCanvasImages();
 })();
