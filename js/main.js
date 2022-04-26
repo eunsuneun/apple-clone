@@ -547,6 +547,7 @@
     }
   });
   window.addEventListener("load", () => {
+    document.body.classList.remove("before-load");
     setLayout();
   });
   window.addEventListener("resize", () => {
@@ -557,6 +558,9 @@
   });
   window.addEventListener("orientationchange", () => {
     setLayout();
+  });
+  document.querySelector(".loading").addEventListener("transitionend", (e) => {
+    document.body.removeChild(e.currentTarget);
   });
   setCanvasImages();
 })();
