@@ -3,11 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    "airbnb",
-    "prettier:prettier/recommended",
-    "plugin:node/recommended",
-  ],
+  extends: ["airbnb", "prettier:prettier/recommended", "plugin:node/recommended"],
   plugins: ["prettier"],
   parserOptions: {
     ecmaVersion: "latest",

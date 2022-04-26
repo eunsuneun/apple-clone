@@ -9,6 +9,7 @@ module.exports = {
     "comment-empty-line-before": null, // 주석 앞에 빈 줄 요구 취소
     "block-closing-brace-newline-before": "always-multi-line", // 블록의 닫는 중괄호 앞에 줄 바꿈
     "block-no-empty": null, // 빈 블록을 허용하지 않음
-    "max-line-length": null, //선의 길이를 제한
+    "max-line-length": null, // 선의 길이를 제한
+    "property-no-vendor-prefix": null, // vendor-prefix 허용
   },
 };
