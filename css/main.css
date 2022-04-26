@@ -30,6 +30,10 @@ a {
 
 /* loading */
 .before-load { overflow: hidden; }
+.before-load .container {
+  /* 로드가 끝나면 container 보여줌 (중간에서 리로드했을 때 높이 계산 이상해지는 버그 수정 */
+  display: none;
+}
 .loading {
   display: flex;
   align-items: center;
