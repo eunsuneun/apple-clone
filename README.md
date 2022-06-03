@@ -11,4 +11,4 @@
 
 ### 클론 사이트 : 에어머그
 
-[AirMug Pro](https://eunsuneun.github.io/apple-clone/)
+[AirMug Pro](https://eunsuneun.github.io/js-apple-clone/)
